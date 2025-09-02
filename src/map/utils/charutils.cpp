@@ -6241,8 +6241,7 @@ namespace charutils
         static const Mod strong[8] = { Mod::FIRE_AFFINITY_PERP, Mod::ICE_AFFINITY_PERP, Mod::WIND_AFFINITY_PERP, Mod::EARTH_AFFINITY_PERP,
                                        Mod::THUNDER_AFFINITY_PERP, Mod::WATER_AFFINITY_PERP, Mod::LIGHT_AFFINITY_PERP, Mod::DARK_AFFINITY_PERP };
 
-        static const WEATHER weatherStrong[8] = { WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND, WEATHER_DUST_STORM,
-                                                  WEATHER_THUNDER, WEATHER_RAIN, WEATHER_AURORAS, WEATHER_GLOOM };
+        
 
         // If you wear a fire staff, you have +2 perp affinity reduction for fire, but -2 for ice as mods.
         perpReduction += PChar->getMod(strong[petElementIdx]);
@@ -6253,8 +6252,8 @@ namespace charutils
             perpReduction += dayReduction;
         }
 
-        // TODO: Whats the deal with the +1 to weather result here?
-        if (weather == weatherStrong[petElementIdx] || weather == weatherStrong[petElementIdx] + 1)
+        // Compare weather and double weather element to pet element
+        if (PPet->shouldApplyWeatherPerpReduction(weather))
         {
             perpReduction += weatherReduction;
         }

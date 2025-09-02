@@ -67,6 +67,7 @@ public:
     virtual void      Die() override;
     virtual void      Spawn() override;
     bool              shouldPersistThroughZone(); // if true, zoning should not cause a currently active pet to despawn
+    bool              shouldApplyWeatherPerpReduction(WEATHER weather); // if true, will apply the weather perpetuation reduction effect
     void              loadPetZoningInfo();        // loads info from previous zone (hp / mp / tp / spawn time). This MUST be called after Spawn()
     virtual void      OnAbility(CAbilityState&, action_t&) override;
     virtual bool      ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags) override;

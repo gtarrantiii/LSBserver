@@ -638,3 +638,22 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
         battleutils::DirtyExp(PTarget, this);
     }
 }
+
+bool CPetEntity::shouldApplyWeatherPerpReduction(WEATHER weather)
+{
+    // only check if pet has an element defined
+    if (m_Element > 0)
+    {
+        uint8   petElementIdx = static_cast<uint8>(m_Element) - 1;
+        // weatherStrong array maps pet element (0-7) to the corresponding weather effect with a gap of 1 per element for the double-strength weather enum value
+        static const WEATHER weatherStrong[8] = { WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND, WEATHER_DUST_STORM,
+                                                  WEATHER_THUNDER, WEATHER_RAIN, WEATHER_AURORAS, WEATHER_GLOOM };
+
+        // weather matches pet element or the double-weather version of the pet element
+        return (weather == weatherStrong[petElementIdx] || weather == weatherStrong[petElementIdx] + 1);
+    }
+    else
+    {
+        return false;
+    }
+}
