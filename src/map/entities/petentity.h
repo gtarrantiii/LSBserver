@@ -23,6 +23,7 @@
 #define _CPETENTITY_H
 
 #include "mobentity.h"
+#include "packets\weather.h"
 
 class CPetSkillState;
 
@@ -66,7 +67,12 @@ public:
     virtual void      FadeOut() override;
     virtual void      Die() override;
     virtual void      Spawn() override;
-    bool              shouldPersistThroughZone(); // if true, zoning should not cause a currently active pet to despawn
+    //
+    // TODO: figure out what this was meant to do
+    // this was warned and was never used anywhere, commented out for now
+    // bool              shouldPersistThroughZone(); // if true, zoning should not cause a currently active pet to despawn
+    //
+    bool              isWeatherAligned(WEATHER weather); // if true, avatar is aligned with current weather
     void              loadPetZoningInfo();        // loads info from previous zone (hp / mp / tp / spawn time). This MUST be called after Spawn()
     virtual void      OnAbility(CAbilityState&, action_t&) override;
     virtual bool      ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags) override;

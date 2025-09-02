@@ -32,6 +32,7 @@
 #include "mob_spell_list.h"
 #include "packets/entity_update.h"
 #include "packets/pet_sync.h"
+#include "packets/weather.h"
 #include "status_effect_container.h"
 #include "utils/battleutils.h"
 #include "utils/mobutils.h"
@@ -636,5 +637,63 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
             battleutils::ClaimMob(PTarget, this);
         }
         battleutils::DirtyExp(PTarget, this);
+    }
+}
+
+bool CPetEntity::isWeatherAligned(WEATHER weather)
+{
+    // only check if pet has an element defined
+    if (m_Element > 0)
+    {
+        switch (weather)
+        {
+            // skip non-elemental weather types
+            case WEATHER_NONE:
+            case WEATHER_SUNSHINE:
+            case WEATHER_CLOUDS:
+            case WEATHER_FOG:
+                return false;
+                break;
+            case WEATHER_HOT_SPELL:
+            case WEATHER_HEAT_WAVE:
+                return (m_Element == ELEMENT::ELEMENT_FIRE);
+                break;
+            case WEATHER_RAIN:
+            case WEATHER_SQUALL:
+                return (m_Element == ELEMENT::ELEMENT_WATER);
+                break;
+            case WEATHER_DUST_STORM:
+            case WEATHER_SAND_STORM:
+                return (m_Element == ELEMENT::ELEMENT_EARTH);
+                break;
+            case WEATHER_WIND:
+            case WEATHER_GALES:
+                return (m_Element == ELEMENT::ELEMENT_WIND);
+                break;
+            case WEATHER_SNOW:
+            case WEATHER_BLIZZARDS:
+                return (m_Element == ELEMENT::ELEMENT_ICE);
+                break;
+            case WEATHER_THUNDER:
+            case WEATHER_THUNDERSTORMS:
+                return (m_Element == ELEMENT::ELEMENT_THUNDER);
+                break;
+            case WEATHER_AURORAS:
+            case WEATHER_STELLAR_GLARE:
+                return (m_Element == ELEMENT::ELEMENT_LIGHT);
+                break;
+            case WEATHER_GLOOM:
+            case WEATHER_DARKNESS:
+                return (m_Element == ELEMENT::ELEMENT_DARK);
+                break;
+        default:
+            ShowWarning("Unknown weather type %d passed to CPetEntity::isWeatherAligned", static_cast<int>(weather));
+            return false;
+            break;
+        }
+    }
+    else
+    {
+        return false;
     }
 }
